@@ -102,42 +102,42 @@ class Home extends Component {
               </h4>
               <hr className="mt-4" />
               <Row className="align-items-between">
-                {post.platinum !== 0 ||
+                {(post.platinum !== 0 ||
                   post.gold !== 0 ||
-                  (post.silver !== 0 && (
-                    <Col className="p-0">
-                      {post.platinum !== 0 && (
-                        <Col>
-                          <IconContext.Provider value={{ color: "#e5e4e2" }}>
-                            <div>
-                              <FaMedal size={16} />
-                            </div>
-                          </IconContext.Provider>
-                          <p className="gild-text">x{post.platinum}</p>
-                        </Col>
-                      )}
-                      {post.gold !== 0 && (
-                        <Col>
-                          <IconContext.Provider value={{ color: "#FFD700" }}>
-                            <div>
-                              <FaMedal size={16} />
-                            </div>
-                          </IconContext.Provider>
-                          <p className="gild-text">x{post.gold}</p>
-                        </Col>
-                      )}
-                      {post.silver !== 0 && (
-                        <Col>
-                          <IconContext.Provider value={{ color: "#c0c0c0" }}>
-                            <div>
-                              <FaMedal size={16} />
-                            </div>
-                          </IconContext.Provider>
-                          <p className="gild-text">x{post.silver}</p>
-                        </Col>
-                      )}
-                    </Col>
-                  ))}
+                  post.silver !== 0) && (
+                  <Row className="ml-2">
+                    {post.platinum !== 0 && (
+                      <Col>
+                        <IconContext.Provider value={{ color: "#e5e4e2" }}>
+                          <div>
+                            <FaMedal size={16} />
+                          </div>
+                        </IconContext.Provider>
+                        <p className="gild-text">x{post.platinum}</p>
+                      </Col>
+                    )}
+                    {post.gold !== 0 && (
+                      <Col>
+                        <IconContext.Provider value={{ color: "#FFD700" }}>
+                          <div>
+                            <FaMedal size={16} />
+                          </div>
+                        </IconContext.Provider>
+                        <p className="gild-text">x{post.gold}</p>
+                      </Col>
+                    )}
+                    {post.silver !== 0 && (
+                      <Col>
+                        <IconContext.Provider value={{ color: "#c0c0c0" }}>
+                          <div>
+                            <FaMedal size={16} />
+                          </div>
+                        </IconContext.Provider>
+                        <p className="gild-text">x{post.silver}</p>
+                      </Col>
+                    )}
+                  </Row>
+                )}
                 <Col className="text-right">by {post.author}</Col>
               </Row>
 
@@ -164,7 +164,7 @@ class Home extends Component {
         {this.state.posts.length == 0 && (
           <Row className="justify-content-center m-100 align-items-center">
             <Col md="6">
-              <Card className="border border-light bg-transparent">
+              <Card className="border border-light frosted-glass">
                 <CardBody>
                   <CardText>
                     <Form>
@@ -183,7 +183,8 @@ class Home extends Component {
                   </CardText>
                   <Button
                     outline
-                    color="success"
+                    className="frosted-dark"
+                    color="light"
                     block
                     onClick={e => {
                       e.preventDefault();
