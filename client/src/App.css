@@ -13,6 +13,14 @@ body {
   font-family: arial, helvetica;
 }
 
+a {
+  color: #ffe9f7;
+}
+
+a:hover {
+  color: #9facd6;
+}
+
 .m-100 {
   min-height: 100vh;
 }
@@ -30,6 +38,15 @@ body {
 
 .App-link {
   color: #09d3ac;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid rgb(255, 255, 255);
+  margin: 1em 0;
+  padding: 0;
 }
 
 .frosted-glass {
@@ -63,20 +80,23 @@ body {
   opacity: 0.5;
 }
 
-.my-masonry-grid {
-  display: -webkit-box; /* Not needed if autoprefixing */
-  display: -ms-flexbox; /* Not needed if autoprefixing */
+.gild-text {
+  font-size: 14px;
+}
+
+.masonry-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   margin-left: -20px; /* gutter size offset */
   width: auto;
 }
-.my-masonry-grid_column {
+.masonry-grid_column {
   padding-left: 20px; /* gutter size */
   background-clip: padding-box;
 }
 
-.my-masonry-grid_column > div {
-  /* change div to reference your elements you put in <Masonry> */
+.masonry-grid_column > div {
   margin-bottom: 20px;
 }
 

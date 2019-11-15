@@ -12,13 +12,28 @@ async function getTopPostsFromSubreddit(url) {
   await axios
     .get(url)
     .then(response => {
-      console.log("Got response");
       posts = response.data.data.children;
       posts.forEach(function(post) {
         postData = post.data;
+        const gildings = postData.gildings;
+        let platinum = 0;
+        let gold = 0;
+        let silver = 0;
+        if (gildings.gid_3) {
+          platinum = gildings.gid_3;
+        }
+        if (gildings.gid_2) {
+          gold = gildings.gid_2;
+        }
+        if (gildings.gid_1) {
+          silver = gildings.gid_1;
+        }
+
         slimmedPost = {
           subreddit: postData.subreddit,
-          gilded: postData.gilded,
+          gold: gold,
+          silver: silver,
+          platinum: platinum,
           title: postData.title,
           score: postData.score,
           created: postData.created,
@@ -32,7 +47,8 @@ async function getTopPostsFromSubreddit(url) {
           is_video: postData.is_video,
           id: postData.id,
           locked: postData.locked,
-          thumbnail: postData.thumbnail
+          thumbnail: postData.thumbnail,
+          link: "https://reddit.com/" + postData.permalink
         };
 
         slimmedPosts.push(slimmedPost);
@@ -41,7 +57,6 @@ async function getTopPostsFromSubreddit(url) {
     .catch(error => {
       console.log(error);
     });
-  console.log("Returning titles");
   return slimmedPosts;
 }
 
@@ -50,8 +65,11 @@ app.get("/api/:subreddit/articles", async (req, res) => {
   var sub = req.params.subreddit;
   var url = "https://www.reddit.com/r/" + sub + "/.json?limit=20";
   const posts = await getTopPostsFromSubreddit(url);
-  res.json(posts);
-  console.log("Sent list of items");
+  if (posts == []) {
+    res.sendStatus(422);
+  } else {
+    res.json(posts);
+  }
 });
 
 // Handles any requests that don't match the ones above
