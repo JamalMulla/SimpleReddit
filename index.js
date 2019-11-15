@@ -43,7 +43,6 @@ async function getTopPostsFromSubreddit(url) {
           stickied: postData.stickied,
           url: postData.url,
           text: postData.selftext,
-          is_video: postData.is_video,
           id: postData.id,
           locked: postData.locked,
           thumbnail: postData.thumbnail,
