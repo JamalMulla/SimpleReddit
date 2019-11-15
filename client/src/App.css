@@ -6,6 +6,17 @@
   height: 40vmin;
 }
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: arial, helvetica;
+}
+
+.m-100 {
+  min-height: 100vh;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -19,4 +30,79 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.frosted-glass {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.frosted-dark {
+  background-color: rgba(52, 58, 64, 0.2);
+}
+
+.frosted-glass:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.frosted-glass::placeholder {
+  color: whitesmoke;
+  opacity: 0.5;
+}
+
+.transparent-input {
+  color: whitesmoke;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.transparent-input:focus {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.transparent-input::placeholder {
+  color: whitesmoke;
+  opacity: 0.5;
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: -20px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 20px; /* gutter size */
+  background-clip: padding-box;
+}
+
+.my-masonry-grid_column > div {
+  /* change div to reference your elements you put in <Masonry> */
+  margin-bottom: 20px;
+}
+
+.posts-body {
+  background: #c94b4b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #4b134f,
+    #c94b4b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #4b134f,
+    #c94b4b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background-attachment: fixed !important;
+}
+
+@media (max-width: 800px) {
+  .my-masonry-grid {
+    margin-left: -15px; /* gutter size offset */
+  }
+  .my-masonry-grid_column {
+    padding-left: 15px; /* gutter size offset */
+  }
+  .my-masonry-grid_column > div {
+    margin-bottom: 15px; /* space between items */
+  }
 }

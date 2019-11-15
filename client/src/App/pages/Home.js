@@ -17,25 +17,34 @@ import {
   Col
 } from "reactstrap";
 import Markdown from "markdown-to-jsx";
+import Masonry from "react-masonry-css";
+
+const breakpointColumnsObj = {
+  default: 5,
+  1300: 4,
+  1000: 3,
+  700: 2,
+  500: 1
+};
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       posts: [],
-      subreddit: null
+      subreddit: null,
+      items: []
     };
     this.getPosts = this.getPosts.bind(this);
     this.changeSubreddit = this.changeSubreddit.bind(this);
+    this.postsToItems = this.postsToItems.bind(this);
   }
 
   getPosts = () => {
-    console.log(this.state.subreddit);
-    console.log("Getting posts");
     fetch("/api/" + this.state.subreddit + "/articles")
       .then(res => res.json())
       .then(posts => {
-        this.setState({ posts });
+        this.setState({ posts }, () => this.postsToItems(posts));
         console.log(posts);
       });
   };
@@ -44,21 +53,32 @@ class Home extends Component {
     this.setState({ subreddit: event.target.value });
   };
 
-  render() {
-    // assuming you are getting your card data in a large json object
-    let postList = [];
-    this.state.posts.forEach(post => {
-      postList.push(
-        <Card>
-          <CardTitle>{post.title}</CardTitle>
-          <CardText>
-            <Markdown>{post.text}</Markdown>
-          </CardText>
-        </Card>
+  postsToItems(posts) {
+    const items = posts.map(function(post) {
+      return (
+        <div key={post.title}>
+          <div className="card border box frosted-dark text-white">
+            <div className="card-header">Score: {post.score}</div>
+            <div className="card-body">
+              <h4 className="card-title">
+                <a href={post.url}>{post.title}</a>
+              </h4>
+              <p className="card-text">
+                <Markdown>{post.text}</Markdown>
+              </p>
+            </div>
+          </div>
+        </div>
       );
     });
+    this.setState({
+      items
+    });
+  }
+
+  render() {
     return (
-      <React.Fragment>
+      <div className="posts-body container-fluid h-100 m-100">
         {this.state.posts.length == 0 && (
           <Container className="align-items-center">
             <Row className="justify-content-center">
@@ -85,8 +105,16 @@ class Home extends Component {
             </Row>
           </Container>
         )}
-        {this.state.posts.length > 0 && postList}
-      </React.Fragment>
+        {this.state.items.length > 0 && (
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+          >
+            {this.state.items}
+          </Masonry>
+        )}
+      </div>
     );
   }
 }
