@@ -25,8 +25,8 @@ import Masonry from "react-masonry-css";
 
 const breakpointColumnsObj = {
   default: 5,
-  1300: 4,
-  1000: 3,
+  1400: 4,
+  1100: 3,
   700: 2,
   500: 1
 };
@@ -87,6 +87,11 @@ class Home extends Component {
                     <Badge color="success">Stickied</Badge>
                   </div>
                 )}
+                {post.locked && (
+                  <div>
+                    <Badge color="primary">Locked</Badge>
+                  </div>
+                )}
               </div>
             </div>
             <div className="card-body">
@@ -96,38 +101,45 @@ class Home extends Component {
                 </a>
               </h4>
               <hr className="mt-4" />
-              <div className="row mr-2 ml-2">
-                {post.platinum !== 0 && (
-                  <div className="mr-2">
-                    <IconContext.Provider value={{ color: "#e5e4e2" }}>
-                      <div>
-                        <FaMedal size={16} />
-                      </div>
-                    </IconContext.Provider>
-                    <p className="gild-text">x{post.platinum}</p>
-                  </div>
-                )}
-                {post.gold !== 0 && (
-                  <div className="mr-2">
-                    <IconContext.Provider value={{ color: "#FFD700" }}>
-                      <div>
-                        <FaMedal size={16} />
-                      </div>
-                    </IconContext.Provider>
-                    <p className="gild-text">x{post.gold}</p>
-                  </div>
-                )}
-                {post.silver !== 0 && (
-                  <div className="mr-2">
-                    <IconContext.Provider value={{ color: "#c0c0c0" }}>
-                      <div>
-                        <FaMedal size={16} />
-                      </div>
-                    </IconContext.Provider>
-                    <p className="gild-text">x{post.silver}</p>
-                  </div>
-                )}
-              </div>
+              <Row className="align-items-between">
+                {post.platinum !== 0 ||
+                  post.gold !== 0 ||
+                  (post.silver !== 0 && (
+                    <Col className="p-0">
+                      {post.platinum !== 0 && (
+                        <Col>
+                          <IconContext.Provider value={{ color: "#e5e4e2" }}>
+                            <div>
+                              <FaMedal size={16} />
+                            </div>
+                          </IconContext.Provider>
+                          <p className="gild-text">x{post.platinum}</p>
+                        </Col>
+                      )}
+                      {post.gold !== 0 && (
+                        <Col>
+                          <IconContext.Provider value={{ color: "#FFD700" }}>
+                            <div>
+                              <FaMedal size={16} />
+                            </div>
+                          </IconContext.Provider>
+                          <p className="gild-text">x{post.gold}</p>
+                        </Col>
+                      )}
+                      {post.silver !== 0 && (
+                        <Col>
+                          <IconContext.Provider value={{ color: "#c0c0c0" }}>
+                            <div>
+                              <FaMedal size={16} />
+                            </div>
+                          </IconContext.Provider>
+                          <p className="gild-text">x{post.silver}</p>
+                        </Col>
+                      )}
+                    </Col>
+                  ))}
+                <Col className="text-right">by {post.author}</Col>
+              </Row>
 
               {/* {post.text !== "" && (
                 <div>
@@ -150,7 +162,7 @@ class Home extends Component {
     return (
       <div className="container-fluid m-100 posts-body">
         {this.state.posts.length == 0 && (
-          <div className="justify-content-center m-100 align-items-center row">
+          <Row className="justify-content-center m-100 align-items-center">
             <Col md="6">
               <Card className="border border-light bg-transparent">
                 <CardBody>
@@ -183,7 +195,7 @@ class Home extends Component {
                 </CardBody>
               </Card>
             </Col>
-          </div>
+          </Row>
         )}
         {this.state.items.length > 0 && (
           <Masonry

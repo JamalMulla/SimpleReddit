@@ -4,7 +4,6 @@ const axios = require("axios");
 
 const app = express();
 
-// Serve the static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
 
 async function getTopPostsFromSubreddit(url) {
@@ -48,7 +47,7 @@ async function getTopPostsFromSubreddit(url) {
           id: postData.id,
           locked: postData.locked,
           thumbnail: postData.thumbnail,
-          link: "https://reddit.com/" + postData.permalink
+          link: "https://reddit.com" + postData.permalink
         };
 
         slimmedPosts.push(slimmedPost);
