@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import Home from "./App/pages/Home";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   render() {
@@ -10,13 +12,10 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
         </Switch>
+        <ToastContainer />
       </div>
     );
-    return (
-      <Switch>
-        <App />
-      </Switch>
-    );
+    return <App />;
   }
 }
 

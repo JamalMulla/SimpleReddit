@@ -7,12 +7,12 @@ const app = express();
 app.use(express.static(path.join(__dirname, "client/build")));
 
 async function getTopPostsFromSubreddit(url) {
-  var slimmedPosts = [];
+  let slimmedPosts = [];
   await axios
     .get(url)
     .then(response => {
       posts = response.data.data.children;
-      posts.forEach(function(post) {
+      posts.forEach(post => {
         postData = post.data;
         const gildings = postData.gildings;
         let platinum = 0;
@@ -63,7 +63,7 @@ app.get("/api/:subreddit/articles", async (req, res) => {
   var sub = req.params.subreddit;
   var url = "https://www.reddit.com/r/" + sub + "/.json?limit=20";
   const posts = await getTopPostsFromSubreddit(url);
-  if (posts == []) {
+  if (!posts || posts.length == 0) {
     res.sendStatus(422);
   } else {
     res.json(posts);
@@ -76,6 +76,6 @@ app.get("/*", (req, res) => {
 });
 
 const port = process.env.PORT || 5000;
-app.listen(port);
-
+server = app.listen(port);
 console.log("App is listening on port " + port);
+module.exports = server;

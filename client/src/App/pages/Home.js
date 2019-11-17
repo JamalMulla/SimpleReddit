@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { FaMedal } from "react-icons/fa";
+import { withRouter } from "react-router-dom";
 import {
   Card,
   CardText,
@@ -18,8 +19,13 @@ import {
   Row,
   Col,
   Collapse,
-  Badge
+  Badge,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader
 } from "reactstrap";
+import { toast } from "react-toastify";
 import Markdown from "markdown-to-jsx";
 import Masonry from "react-masonry-css";
 
@@ -37,19 +43,49 @@ class Home extends Component {
     this.state = {
       posts: [],
       subreddit: null,
-      items: []
+      items: [],
+      toastId: null,
+      modal: false,
+      modalHeader: "",
+      modalText: "",
+      modalLink: ""
     };
     this.getPosts = this.getPosts.bind(this);
     this.changeSubreddit = this.changeSubreddit.bind(this);
     this.postsToItems = this.postsToItems.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.showModal = this.showModal.bind(this);
   }
 
+  notify = error => {
+    if (!toast.isActive(this.state.toastId)) {
+      const toastId = toast.error(error, {
+        position: toast.POSITION.TOP_RIGHT
+      });
+      this.setState({ toastId });
+    }
+  };
+
+  dismissAll = () => toast.dismiss();
+
   getPosts = () => {
-    fetch("/api/" + this.state.subreddit + "/articles")
-      .then(res => res.json())
+    const url = "/api/" + this.state.subreddit + "/articles";
+    fetch(url)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Could not load posts");
+        }
+      })
       .then(posts => {
-        this.setState({ posts }, () => this.postsToItems(posts));
-        console.log(posts);
+        this.setState({ posts }, () => {
+          this.postsToItems(posts);
+          this.dismissAll();
+        });
+      })
+      .catch(error => {
+        this.notify(error.message);
       });
   };
 
@@ -64,14 +100,32 @@ class Home extends Component {
     }
   };
 
+  toggleModal = () => {
+    this.setState({ modal: !this.state.modal });
+  };
+
+  showModal = (title, text, link) => {
+    this.setState(
+      { modalHeader: title, modalText: text, modalLink: link },
+      () => {
+        this.toggleModal();
+      }
+    );
+  };
+
   postsToItems(posts) {
-    const items = posts.map(function(post) {
+    const items = posts.map(post => {
       return (
         <div key={post.title}>
           <div className="card border box frosted-dark text-white">
             <div className="card-header">
               <div className="row m-0 justify-content-between">
-                <div>Score: {post.score}</div>
+                <div>
+                  <div style={{ fontSize: "13px" }}>Score: {post.score}</div>
+                  <div style={{ fontSize: "13px" }}>
+                    Comments: {post.num_comments}
+                  </div>
+                </div>
                 {post.nsfw && (
                   <div>
                     <Badge color="danger">NSFW</Badge>
@@ -138,16 +192,23 @@ class Home extends Component {
                     )}
                   </Row>
                 )}
+                {post.text !== "" && (
+                  <Col>
+                    <Button
+                      outline
+                      className="frosted-dark"
+                      color="light"
+                      onClick={e => {
+                        e.preventDefault();
+                        this.showModal(post.title, post.text, post.link);
+                      }}
+                    >
+                      Expand
+                    </Button>
+                  </Col>
+                )}
                 <Col className="text-right">by {post.author}</Col>
               </Row>
-
-              {/* {post.text !== "" && (
-                <div>
-                  <p className="card-text">
-                    <Markdown>{post.text}</Markdown>
-                  </p>
-                </div>
-              )} */}
             </div>
           </div>
         </div>
@@ -161,6 +222,38 @@ class Home extends Component {
   render() {
     return (
       <div className="container-fluid m-100 posts-body">
+        <Modal
+          isOpen={this.state.modal}
+          toggle={this.toggleModal}
+          centered={true}
+          size={"lg"}
+          className="custom-modal"
+        >
+          <ModalHeader toggle={this.toggleModal}>
+            {this.state.modalHeader}
+          </ModalHeader>
+          <ModalBody>
+            <Markdown>{this.state.modalText}</Markdown>
+          </ModalBody>
+          <ModalFooter>
+            <Button outline className="frosted-dark" color="light">
+              <a href={this.state.modalLink} target="_blank">
+                Open
+              </a>
+            </Button>
+            <Button
+              outline
+              className="frosted-dark"
+              color="light"
+              onClick={e => {
+                e.preventDefault();
+                this.toggleModal();
+              }}
+            >
+              Close
+            </Button>
+          </ModalFooter>
+        </Modal>
         {this.state.posts.length == 0 && (
           <Row className="justify-content-center m-100 align-items-center">
             <Col md="6">
