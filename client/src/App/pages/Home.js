@@ -1,24 +1,20 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { IconContext } from "react-icons";
-import { FaMedal } from "react-icons/fa";
-import { withRouter } from "react-router-dom";
+import { FaMedal, FaArrowLeft } from "react-icons/fa";
+import {
+  Container as FabContainer,
+  Button as FabButton
+} from "react-floating-action-button";
 import {
   Card,
   CardText,
   CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardHeader,
   Button,
   Form,
   FormGroup,
-  Label,
   Input,
-  Container,
   Row,
   Col,
-  Collapse,
   Badge,
   Modal,
   ModalBody,
@@ -64,6 +60,19 @@ class Home extends Component {
       });
       this.setState({ toastId });
     }
+  };
+
+  reset = () => {
+    this.setState({
+      posts: [],
+      subreddit: null,
+      items: [],
+      toastId: null,
+      modal: false,
+      modalHeader: "",
+      modalText: "",
+      modalLink: ""
+    });
   };
 
   dismissAll = () => toast.dismiss();
@@ -222,6 +231,20 @@ class Home extends Component {
   render() {
     return (
       <div className="container-fluid m-100 posts-body">
+        {this.state.posts.length > 0 && (
+          <FabContainer className="above">
+            <FabButton
+              tooltip="Go back"
+              onClick={e => {
+                e.preventDefault();
+                this.reset();
+              }}
+              styles={{ backgroundColor: "#ff8880", color: "#fff" }}
+            >
+              <FaArrowLeft size={32} />
+            </FabButton>
+          </FabContainer>
+        )}
         <Modal
           isOpen={this.state.modal}
           toggle={this.toggleModal}
@@ -237,14 +260,18 @@ class Home extends Component {
           </ModalBody>
           <ModalFooter>
             <Button outline className="frosted-dark" color="light">
-              <a href={this.state.modalLink} target="_blank">
+              <a
+                href={this.state.modalLink}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
                 Open
               </a>
             </Button>
             <Button
               outline
               className="frosted-dark"
-              color="light"
+              color="dark"
               onClick={e => {
                 e.preventDefault();
                 this.toggleModal();
