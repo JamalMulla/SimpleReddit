@@ -5,7 +5,7 @@ Simple web app to display top reddit articles for a specific subreddit
 The webapp is using Express as the backend server and React as the frontend.
 
 # Running locally
-To run locally you need to run both the server and frontend. You can do this by running `npm start` in both the root directory and the client/ directory. The root contains the server and the client/ directory contains the webapp.
+To run locally you need to run both the server and frontend. You can do this by running `npm start` in both the root directory and the client/ directory. The root contains the server and the client/ directory contains the react app.
 
 # Overview
 The frontend has a simple input for the user to put in a subreddit name. When the user presses submit, this is sent to the Express server by using the following endpoint `/api/:subreddit/articles`. The server then requests the top 20 posts for that subreddit from Reddit and parses the JSON to only get the most relevant fields. This new JSON object is then returned. 
