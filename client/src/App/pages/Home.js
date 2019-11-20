@@ -286,23 +286,23 @@ class Home extends Component {
             <Col md="6">
               <Card className="border border-light frosted-glass">
                 <CardBody>
-                  <CardText>
-                    <Form>
-                      <FormGroup>
-                        <Input
-                          className="transparent-input"
-                          type="text"
-                          id="subreddit"
-                          placeholder="Subreddit"
-                          style={{ color: "#fff" }}
-                          onKeyDown={this._handleKeyDown}
-                          onChange={this.changeSubreddit}
-                        />
-                      </FormGroup>
-                    </Form>
-                  </CardText>
+                  <Form>
+                    <FormGroup>
+                      <Input
+                        className="transparent-input"
+                        type="text"
+                        id="subreddit"
+                        placeholder="Subreddit"
+                        style={{ color: "#fff" }}
+                        onKeyDown={this._handleKeyDown}
+                        onChange={this.changeSubreddit}
+                      />
+                    </FormGroup>
+                  </Form>
+
                   <Button
                     outline
+                    id="btn_submit_sub"
                     className="frosted-dark"
                     color="light"
                     block
